@@ -40,7 +40,7 @@ pipeline {
             steps {
                 echo '🐍 Installing backend dependencies...'
                 dir("${BACKEND_DIR}") {
-                    sh 'pip install fastapi uvicorn'
+                    sh 'pip install fastapi uvicorn --break-system-packages'
                 }
                 echo '✅ Backend dependencies installed'
             }
