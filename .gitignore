@@ -1,0 +1,19 @@
+# Create .gitignore file
+@"
+# Dependencies
+frontend/node_modules/
+frontend/build/
+
+# Python
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+"@ | Out-File -FilePath .gitignore -Encoding utf8
