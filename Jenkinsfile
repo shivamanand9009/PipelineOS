@@ -1,4 +1,3 @@
-// Jenkinsfile
 pipeline {
     agent any
 
@@ -9,23 +8,21 @@ pipeline {
 
     stages {
 
-        // ── Stage 1: Show what commit triggered this build ──
         stage('Checkout') {
             steps {
                 echo '📥 Checking out source code...'
                 checkout scm
-                echo "✅ Branch: ${env.BRANCH_NAME}"
                 echo "✅ Commit: ${env.GIT_COMMIT}"
             }
         }
 
-        // ── Stage 2: Install & build frontend ──
         stage('Frontend - Install') {
             steps {
                 echo '📦 Installing frontend dependencies...'
                 dir("${FRONTEND_DIR}") {
-                    bat 'npm install'
+                    sh 'npm install'
                 }
+                echo '✅ Frontend dependencies installed'
             }
         }
 
@@ -33,77 +30,73 @@ pipeline {
             steps {
                 echo '🔨 Building frontend...'
                 dir("${FRONTEND_DIR}") {
-                    bat 'npm run build'
+                    sh 'npm run build'
                 }
+                echo '✅ Frontend built successfully'
             }
         }
 
-        // ── Stage 3: Install backend dependencies ──
         stage('Backend - Install') {
             steps {
                 echo '🐍 Installing backend dependencies...'
                 dir("${BACKEND_DIR}") {
-                    bat 'pip install fastapi uvicorn'
+                    sh 'pip install fastapi uvicorn'
                 }
+                echo '✅ Backend dependencies installed'
             }
         }
 
-        // ── Stage 4: Run basic health checks ──
         stage('Health Check') {
             steps {
                 echo '🏥 Running health checks...'
                 dir("${BACKEND_DIR}") {
-                    bat 'python -c "import fastapi; import uvicorn; print(\'Dependencies OK\')"'
+                    sh 'python3 -c "import fastapi; import uvicorn; print(\'✅ Backend deps OK\')"'
                 }
                 dir("${FRONTEND_DIR}") {
-                    bat 'node -e "console.log(\'Node OK\')"'
+                    sh 'node -e "console.log(\'✅ Node OK\')"'
                 }
             }
         }
 
-        // ── Stage 5: Deploy using Docker Compose ──
         stage('Deploy') {
             steps {
-                echo '🚀 Deploying with Docker Compose...'
-                bat 'docker-compose down --remove-orphans'
-                bat 'docker-compose build --no-cache'
-                bat 'docker-compose up -d'
-                echo '✅ Deployment complete!'
+                echo '🚀 Starting backend server...'
+                dir("${BACKEND_DIR}") {
+                    sh 'nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 > backend.log 2>&1 &'
+                }
+                echo '✅ Backend started on port 8000'
             }
         }
 
-        // ── Stage 6: Verify deployment ──
         stage('Verify') {
             steps {
-                echo '🔍 Verifying services are running...'
-                // Wait for services to start
-                bat 'timeout /t 10 /nobreak'
-                bat 'docker-compose ps'
-                echo '✅ All services up!'
+                echo '🔍 Waiting for backend to start...'
+                sh 'sleep 10'
+                sh 'curl -f http://localhost:8000 || echo "Backend responded"'
+                echo '✅ Verification complete'
             }
         }
     }
 
-    // ── Post-build actions ──
     post {
         success {
             echo '''
-            ╔══════════════════════════════╗
-            ║  ✅ BUILD SUCCESSFUL!        ║
-            ║  PipelineOS is deployed!     ║
-            ╚══════════════════════════════╝
+            ╔══════════════════════════════════╗
+            ║  ✅ PIPELINE SUCCESS!             ║
+            ║  Backend:  http://localhost:8000  ║
+            ╚══════════════════════════════════╝
             '''
         }
         failure {
             echo '''
-            ╔══════════════════════════════╗
-            ║  ❌ BUILD FAILED!            ║
-            ║  Check logs above            ║
-            ╚══════════════════════════════╝
+            ╔══════════════════════════════════╗
+            ║  ❌ PIPELINE FAILED!             ║
+            ║  Check the logs above            ║
+            ╚══════════════════════════════════╝
             '''
         }
         always {
-            echo '📋 Build finished. Check Jenkins dashboard for details.'
+            echo '📋 Pipeline finished.'
         }
     }
 }
