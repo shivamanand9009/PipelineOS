@@ -1,29 +1,26 @@
-// nodes/textNode.js
-// Part 3: Auto-resize + dynamic variable handles from {{varName}} syntax
+import { useState, useEffect, useRef } from "react";
+import { Handle, Position } from "reactflow";
 
-import { useState, useEffect, useRef } from 'react';
-import { Handle, Position } from 'reactflow';
-
-const ACCENT = '#f59e0b';
+const ACCENT = "#f59e0b";
 
 const nodeStyle = {
-  background: 'linear-gradient(135deg, #0f1623 0%, #1a2235 100%)',
+  background: "linear-gradient(135deg, #0f1623 0%, #1a2235 100%)",
   border: `1px solid ${ACCENT}44`,
   borderLeft: `3px solid ${ACCENT}`,
-  borderRadius: '10px',
+  borderRadius: "10px",
   fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
   boxShadow: `0 0 20px ${ACCENT}22, 0 4px 24px #00000088`,
-  position: 'relative',
-  minWidth: '220px',
-  boxSizing: 'border-box',
+  position: "relative",
+  minWidth: "220px",
+  boxSizing: "border-box",
 };
 
 const handleDotStyle = {
-  width: '10px',
-  height: '10px',
+  width: "10px",
+  height: "10px",
   background: ACCENT,
-  border: '2px solid #0a0f1a',
-  borderRadius: '50%',
+  border: "2px solid #0a0f1a",
+  borderRadius: "50%",
   boxShadow: `0 0 6px ${ACCENT}`,
 };
 
@@ -39,9 +36,9 @@ const extractVariables = (text) => {
 };
 
 export const TextNode = ({ id, data }) => {
-  const [text, setText] = useState(data?.text || '{{input}}');
+  const [text, setText] = useState(data?.text || "{{input}}");
   const textareaRef = useRef(null);
-  const [size, setSize] = useState({ width: 220, height: 'auto' });
+  const [size, setSize] = useState({ width: 220, height: "auto" });
 
   const variables = extractVariables(text);
 
@@ -49,11 +46,11 @@ export const TextNode = ({ id, data }) => {
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
 
     // Estimate width from longest line
-    const lines = text.split('\n');
+    const lines = text.split("\n");
     const longest = Math.max(...lines.map((l) => l.length), 10);
     const newWidth = Math.min(Math.max(220, longest * 8 + 60), 600);
     setSize({ width: newWidth });
@@ -64,22 +61,22 @@ export const TextNode = ({ id, data }) => {
       {/* Header */}
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '10px 14px 8px',
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          padding: "10px 14px 8px",
           borderBottom: `1px solid ${ACCENT}33`,
           background: `linear-gradient(90deg, ${ACCENT}18 0%, transparent 100%)`,
-          borderRadius: '8px 8px 0 0',
+          borderRadius: "8px 8px 0 0",
         }}
       >
         <span>📝</span>
         <span
           style={{
-            fontSize: '11px',
-            fontWeight: '700',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
+            fontSize: "11px",
+            fontWeight: "700",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
             color: ACCENT,
           }}
         >
@@ -88,31 +85,31 @@ export const TextNode = ({ id, data }) => {
         {variables.length > 0 && (
           <span
             style={{
-              marginLeft: 'auto',
-              fontSize: '9px',
-              color: '#5a6a8a',
-              background: '#0a0f1a',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              border: '1px solid #1e2d45',
+              marginLeft: "auto",
+              fontSize: "9px",
+              color: "#5a6a8a",
+              background: "#0a0f1a",
+              padding: "2px 6px",
+              borderRadius: "4px",
+              border: "1px solid #1e2d45",
             }}
           >
-            {variables.length} var{variables.length !== 1 ? 's' : ''}
+            {variables.length} var{variables.length !== 1 ? "s" : ""}
           </span>
         )}
       </div>
 
       {/* Body */}
-      <div style={{ padding: '12px 14px' }}>
+      <div style={{ padding: "12px 14px" }}>
         <span
           style={{
-            fontSize: '9px',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: '#5a6a8a',
-            fontWeight: '600',
-            display: 'block',
-            marginBottom: '4px',
+            fontSize: "9px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "#5a6a8a",
+            fontWeight: "600",
+            display: "block",
+            marginBottom: "4px",
           }}
         >
           Text Content
@@ -123,21 +120,21 @@ export const TextNode = ({ id, data }) => {
           onChange={(e) => setText(e.target.value)}
           rows={1}
           style={{
-            background: '#0a0f1a',
-            border: '1px solid #1e2d45',
-            borderRadius: '5px',
-            color: '#c8d8f0',
-            padding: '6px 8px',
-            fontSize: '12px',
+            background: "#0a0f1a",
+            border: "1px solid #1e2d45",
+            borderRadius: "5px",
+            color: "#c8d8f0",
+            padding: "6px 8px",
+            fontSize: "12px",
             fontFamily: "'JetBrains Mono', monospace",
-            outline: 'none',
-            width: '100%',
-            boxSizing: 'border-box',
-            resize: 'none',
-            overflow: 'hidden',
-            lineHeight: '1.5',
-            transition: 'border-color 0.2s',
-            minHeight: '32px',
+            outline: "none",
+            width: "100%",
+            boxSizing: "border-box",
+            resize: "none",
+            overflow: "hidden",
+            lineHeight: "1.5",
+            transition: "border-color 0.2s",
+            minHeight: "32px",
           }}
           placeholder="Type text or use {{variable}}..."
         />
@@ -146,23 +143,23 @@ export const TextNode = ({ id, data }) => {
         {variables.length > 0 && (
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '4px',
-              marginTop: '6px',
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "4px",
+              marginTop: "6px",
             }}
           >
             {variables.map((v) => (
               <span
                 key={v}
                 style={{
-                  fontSize: '9px',
+                  fontSize: "9px",
                   color: ACCENT,
                   background: `${ACCENT}15`,
                   border: `1px solid ${ACCENT}44`,
-                  borderRadius: '4px',
-                  padding: '2px 6px',
-                  fontFamily: 'monospace',
+                  borderRadius: "4px",
+                  padding: "2px 6px",
+                  fontFamily: "monospace",
                 }}
               >
                 {`{{${v}}}`}
@@ -174,9 +171,10 @@ export const TextNode = ({ id, data }) => {
 
       {/* Dynamic Input Handles — one per variable */}
       {variables.map((v, i) => {
-        const top = variables.length === 1
-          ? '50%'
-          : `${((i + 1) / (variables.length + 1)) * 100}%`;
+        const top =
+          variables.length === 1
+            ? "50%"
+            : `${((i + 1) / (variables.length + 1)) * 100}%`;
         return (
           <Handle
             key={v}
@@ -194,7 +192,7 @@ export const TextNode = ({ id, data }) => {
         type="source"
         position={Position.Right}
         id={`${id}-output`}
-        style={{ ...handleDotStyle, top: '50%' }}
+        style={{ ...handleDotStyle, top: "50%" }}
         title="Output"
       />
     </div>

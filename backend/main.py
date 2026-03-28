@@ -1,4 +1,3 @@
-# main.py — Part 4: Backend Integration
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -17,14 +16,14 @@ app.add_middleware(
 )
 
 
-# ── Request schema ──────────────────────────────────────────────────────────
+# Request schema
 
 class PipelineRequest(BaseModel):
     nodes: List[Dict[str, Any]]
     edges: List[Dict[str, Any]]
 
 
-# ── DAG check via Kahn's algorithm (topological sort / BFS) ─────────────────
+#  DAG check via Kahn's algorithm (topological sort / BFS)
 
 def is_dag(nodes: list, edges: list) -> bool:
     """
@@ -60,7 +59,6 @@ def is_dag(nodes: list, edges: list) -> bool:
     return visited == len(node_ids)
 
 
-# ── Endpoints ───────────────────────────────────────────────────────────────
 
 @app.get("/")
 def read_root():

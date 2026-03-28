@@ -1,5 +1,3 @@
-// nodes/BaseNode.js
-// ─────────────────────────────────────────────────────────────────────────────
 // ABSTRACTION: All nodes extend this. Pass in:
 //   - id, data          (from ReactFlow)
 //   - label             (node title string)
@@ -12,7 +10,6 @@
 //
 // Field config shape:
 //   { name, label, type: 'text'|'select'|'textarea'|'number', options?, defaultValue?, onChange? }
-// ─────────────────────────────────────────────────────────────────────────────
 
 import { useState } from "react";
 import { Handle, Position } from "reactflow";
@@ -195,7 +192,7 @@ export const BaseNode = ({
         {children}
       </div>
 
-      {/* ── Input Handles (Left) ── */}
+      {/* Input Handles (Left) */}
       {inputHandles.map((h, i) => {
         const top =
           inputHandles.length === 1
@@ -213,7 +210,7 @@ export const BaseNode = ({
         );
       })}
 
-      {/* ── Output Handles (Right) ── */}
+      {/* Output Handles (Right) */}
       {outputHandles.map((h, i) => {
         const top =
           outputHandles.length === 1

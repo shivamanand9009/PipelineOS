@@ -1,9 +1,8 @@
-// submit.js — Part 4: Backend Integration
+// submit.js — Backend Integration
 import { useStore } from "./store";
 import { useState } from "react";
 
 export const SubmitButton = () => {
-  // ✅ Individual selectors — no shallow needed
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
   const [loading, setLoading] = useState(false);
@@ -46,8 +45,8 @@ export const SubmitButton = () => {
         padding: "14px",
         background: "#080d18",
         borderTop: "1px solid #1a2540",
-        height: "60px", // ✅ fixed height so canvas doesn't swallow it
-        flexShrink: 0, // ✅ won't get squished by flex parent
+        height: "60px",
+        flexShrink: 0,
       }}
     >
       <button
