@@ -1,0 +1,41 @@
+/* index.css */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #080d18;
+  color: #c8d8f0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ReactFlow dark overrides */
+.react-flow__controls button {
+  background: #0d1424 !important;
+  border-color: #1a2540 !important;
+  color: #5a7aaa !important;
+}
+.react-flow__controls button:hover {
+  background: #1a2235 !important;
+  color: #c8d8f0 !important;
+}
+.react-flow__edge-path {
+  stroke: #2a4070 !important;
+  stroke-width: 2px !important;
+}
+.react-flow__edge.animated path {
+  stroke-dasharray: 5 !important;
+}
+.react-flow__connection-line {
+  stroke: #3b82f6 !important;
+}
+.react-flow__handle:hover {
+  transform: scale(1.4);
+  transition: transform 0.15s;
+}
